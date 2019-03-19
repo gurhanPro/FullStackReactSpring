@@ -23,7 +23,7 @@ public class ProjectTaskController {
     @PostMapping("")
     public ResponseEntity<?> addPTToBoard(@Valid @RequestBody ProjectTask projectTask, BindingResult result){
 
-        // this is to usefull errors when posting goes wrong 
+        // this is to usefull errors when posting goes wrong
         if(result.hasErrors()){
             Map<String, String> errorMap = new HashMap<>();
 
@@ -36,5 +36,16 @@ public class ProjectTaskController {
 
         ProjectTask newPT = projectTaskService.saveOrUpadateprojectTask(projectTask);
         return new ResponseEntity<ProjectTask>(newPT, HttpStatus.CREATED);
+    }
+
+    @GetMapping("/all")
+    public Iterable<ProjectTask> getAllPTs(){
+        return projectTaskService.findAll();
+    }
+
+    @GetMapping("/{pt_id}")
+    public ResponseEntity<?> getPTById(@PathVariable Long pt_id){
+        ProjectTask projectTask = projectTaskService.findById(pt_id);
+        return new ResponseEntity<>(projectTask, HttpStatus.OK);
     }
 }
